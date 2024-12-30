@@ -17,7 +17,7 @@ Simple/small bookshop platform.
   - purchase
   - report
      - daily
-     - montly
+     - monthly
      - yearly
  
 
