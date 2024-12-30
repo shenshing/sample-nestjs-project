@@ -7,25 +7,27 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
+  Res,
+  HttpStatus,
 } from "@nestjs/common";
 import { AuthenticationService } from "./authentication.service";
-import { CreateAuthenticationDto } from "./dto/create-authentication.dto";
-import { UpdateAuthenticationDto } from "./dto/update-authentication.dto";
+// import { CreateAuthenticationDto } from "./dto/create-authentication.dto";
+// import { UpdateAuthenticationDto } from "./dto/update-authentication.dto";
 import { AuthGuard } from "./guards/authentication.guard";
 import { Roles } from "src/authorization/roles.decorator";
 import { Role } from "src/authorization/enum/role.enum";
 import { RolesGuard } from "src/authorization/authorization.guard";
 import { GoogleOauthGuard } from "./guards/google-login.guard";
+import { LoginDTO } from "./dto/login.dto";
 
 @Controller("authentication")
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Post("/login")
-  async login(@Body() credential: { username: string; password: string }) {
-    console.log("---> credential: ", credential);
-    return this.authenticationService.login(credential);
-    // return 'login succeed.'
+  async login(@Body() loginDto: LoginDTO) {
+    return this.authenticationService.login(loginDto);
   }
   @Get("/login-with-google")
   @UseGuards(GoogleOauthGuard)
@@ -42,6 +44,21 @@ export class AuthenticationController {
     };
   }
 
+  @Get("/google/redirect")
+  @UseGuards(GoogleOauthGuard)
+  callback(@Req() req, @Res() res) {
+
+    console.log('google is triggered');
+    // return {
+    //   message: 'user from google',
+    //   user: req.user,
+    // };
+
+    // return 'ok';
+    res.end();
+    return res.status(HttpStatus.OK);
+  }
+
   @UseGuards(AuthGuard, RolesGuard)
   //   @Roles(Role.Admin)
   @Roles(Role.User)
@@ -50,31 +67,32 @@ export class AuthenticationController {
     return "This is the password";
   }
 
-  @Post()
-  create(@Body() createAuthenticationDto: CreateAuthenticationDto) {
-    return this.authenticationService.create(createAuthenticationDto);
-  }
 
-  @Get()
-  findAll() {
-    return this.authenticationService.findAll();
-  }
+//   @Post()
+//   create(@Body() createAuthenticationDto: CreateAuthenticationDto) {
+//     return this.authenticationService.create(createAuthenticationDto);
+//   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.authenticationService.findOne(+id);
-  }
+//   @Get()
+//   findAll() {
+//     return this.authenticationService.findAll();
+//   }
 
-  @Patch(":id")
-  update(
-    @Param("id") id: string,
-    @Body() updateAuthenticationDto: UpdateAuthenticationDto
-  ) {
-    return this.authenticationService.update(+id, updateAuthenticationDto);
-  }
+//   @Get(":id")
+//   findOne(@Param("id") id: string) {
+//     return this.authenticationService.findOne(+id);
+//   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.authenticationService.remove(+id);
-  }
+//   @Patch(":id")
+//   update(
+//     @Param("id") id: string,
+//     @Body() updateAuthenticationDto: UpdateAuthenticationDto
+//   ) {
+//     return this.authenticationService.update(+id, updateAuthenticationDto);
+//   }
+
+//   @Delete(":id")
+//   remove(@Param("id") id: string) {
+//     return this.authenticationService.remove(+id);
+//   }
 }
