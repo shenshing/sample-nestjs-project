@@ -11,9 +11,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
   constructor() // @InjectRepository(User) private userRepository: Repository<User>, // @Inject(config.KEY) private configService: ConfigType<typeof config>,
   {
     super({
-      //   clientID: configService.google.clientID,
-      //   callbackURL: configService.google.callbackURL,
-      //   clientSecret: configService.google.clientSecret,
       clientID: process.env.LOGIN_WITH_GOOGLE_CLIENT_ID,
       clientSecret: process.env.LOGIN_WITH_GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.LOGIN_WITH_GOOGLE_CALLBACK_URL,
