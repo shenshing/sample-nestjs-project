@@ -10,6 +10,7 @@ import { Strategy, VerifyCallback } from "passport-google-oauth2";
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
   constructor() // @InjectRepository(User) private userRepository: Repository<User>, // @Inject(config.KEY) private configService: ConfigType<typeof config>,
   {
+    
     super({
       clientID: process.env.LOGIN_WITH_GOOGLE_CLIENT_ID,
       clientSecret: process.env.LOGIN_WITH_GOOGLE_CLIENT_SECRET,
